@@ -103,7 +103,8 @@ fi
 
 # Create Caddy log directory
 sudo mkdir -p /var/log/caddy
-sudo chown caddy:caddy /var/log/caddy
+sudo chown -R caddy:caddy /var/log/caddy
+ sudo chmod 755 /var/log/caddy
 
 # Display instructions for Caddyfile configuration
 echo ""
