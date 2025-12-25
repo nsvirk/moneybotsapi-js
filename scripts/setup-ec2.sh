@@ -11,7 +11,8 @@ sudo dnf update -y
 
 # Install required packages
 echo "Installing required packages..."
-sudo dnf install -y curl unzip git
+# Note: curl-minimal is pre-installed on Amazon Linux 2023, skip curl
+sudo dnf install -y unzip git
 
 # Install Bun
 echo "Installing Bun..."
