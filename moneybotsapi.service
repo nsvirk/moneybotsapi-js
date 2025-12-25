@@ -1,0 +1,19 @@
+[Unit]
+Description=MoneyBots API Service
+After=network.target
+
+[Service]
+Type=simple
+User=ec2-user
+WorkingDirectory=/home/ec2-user/apps/moneybotsapi-js
+ExecStart=/home/ec2-user/.bun/bin/bun run index.ts
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=moneybotsapi
+
+# Environment variables are loaded from .env file (Bun loads automatically)
+
+[Install]
+WantedBy=multi-user.target

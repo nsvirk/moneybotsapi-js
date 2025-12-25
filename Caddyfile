@@ -1,0 +1,35 @@
+# Caddyfile for MoneyBots API
+# This is a reference configuration
+
+# Add this configuration to your existing /etc/caddy/Caddyfile on EC2
+
+api.moneybots.app {
+    # Reverse proxy to Bun API running on localhost:3000
+    reverse_proxy localhost:3000
+
+    # Caddy automatically handles SSL certificates via Let's Encrypt
+
+    # Security headers
+    header {
+        # Enable HSTS
+        Strict-Transport-Security "max-age=31536000;"
+        # Prevent clickjacking
+        X-Frame-Options "DENY"
+        # Prevent MIME type sniffing
+        X-Content-Type-Options "nosniff"
+        # XSS Protection
+        X-XSS-Protection "1; mode=block"
+    }
+
+    # Access logging
+    log {
+        output file /var/log/caddy/moneybotsapi-access.log
+        format json
+    }
+
+    # Error logging
+    log {
+        output file /var/log/caddy/moneybotsapi-error.log
+        level ERROR
+    }
+}
