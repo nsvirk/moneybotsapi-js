@@ -1,0 +1,10 @@
+# Node
+node_modules/
+
+# App
+.env
+.env.local
+.env.*.local
+
+# Keep .env.example (template)
+!.env.example
