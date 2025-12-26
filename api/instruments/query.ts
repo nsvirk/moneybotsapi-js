@@ -2,7 +2,12 @@
  * Query instruments from the database
  */
 import { db } from "../_db/kite_instruments";
-import { successResponse, inputError, dbError } from "../_shared/responses";
+import {
+  successResponse,
+  inputError,
+  dbError,
+  checkMethod,
+} from "../_shared/responses";
 import { isRefreshRequired } from "./refresh-check";
 import { performInstrumentsRefresh } from "./refresh";
 
@@ -44,10 +49,9 @@ type OrderByField = (typeof VALID_ORDER_BY_FIELDS)[number];
 
 export async function handleQuery(req: Request): Promise<Response> {
   try {
-    // Only allow GET requests
-    if (req.method !== "GET") {
-      return inputError("Method not allowed");
-    }
+    // Check HTTP method
+    const methodError = checkMethod(req, "GET");
+    if (methodError) return methodError;
 
     // Check if data refresh is required before querying
     if (isRefreshRequired()) {

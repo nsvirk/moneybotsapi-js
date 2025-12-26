@@ -9,19 +9,19 @@ import { handleTotp } from "./totp";
 
 const user = new Hono();
 
-user.post("/register", async (c) => {
+user.all("/register", async (c) => {
   return handleRegister(c.req.raw);
 });
 
-user.post("/login", async (c) => {
+user.all("/login", async (c) => {
   return handleLogin(c.req.raw);
 });
 
-user.delete("/logout", async (c) => {
+user.all("/logout", async (c) => {
   return handleLogout(c.req.raw);
 });
 
-user.post("/totp", async (c) => {
+user.all("/totp", async (c) => {
   return handleTotp(c.req.raw);
 });
 

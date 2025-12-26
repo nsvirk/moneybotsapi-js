@@ -2,15 +2,19 @@
  * Handle user registration
  */
 import { db } from "../_db/kite_users";
-import { successResponse, inputError, dbError } from "../_shared/responses";
+import {
+  successResponse,
+  inputError,
+  dbError,
+  checkMethod,
+} from "../_shared/responses";
 import { getISTTimestamp } from "../_shared/time";
 
 export async function handleRegister(req: Request): Promise<Response> {
   try {
-    // Only allow POST requests
-    if (req.method !== "POST") {
-      return inputError("Method not allowed");
-    }
+    // Check HTTP method
+    const methodError = checkMethod(req, "POST");
+    if (methodError) return methodError;
 
     // Parse form-encoded data
     const contentType = req.headers.get("content-type");

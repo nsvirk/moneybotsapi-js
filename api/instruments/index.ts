@@ -7,12 +7,12 @@ import { handleQuery } from "./query";
 
 const instruments = new Hono();
 
-instruments.get("/refresh", async (c) => {
+instruments.all("/refresh", async (c) => {
   const response = await handleRefresh(c.req.raw);
   return response;
 });
 
-instruments.get("/query", async (c) => {
+instruments.all("/query", async (c) => {
   const response = await handleQuery(c.req.raw);
   return response;
 });

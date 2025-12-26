@@ -7,14 +7,14 @@ import {
   inputError,
   authError,
   dbError,
+  checkMethod,
 } from "../_shared/responses";
 
 export async function handleLogout(req: Request): Promise<Response> {
   try {
-    // Only allow DELETE requests
-    if (req.method !== "DELETE") {
-      return inputError("Method not allowed");
-    }
+    // Check HTTP method
+    const methodError = checkMethod(req, "DELETE");
+    if (methodError) return methodError;
 
     // Parse form-encoded data
     const contentType = req.headers.get("content-type");

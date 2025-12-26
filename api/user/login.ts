@@ -7,6 +7,7 @@ import {
   inputError,
   authError,
   dbError,
+  checkMethod,
 } from "../_shared/responses";
 import { getISTTimestamp } from "../_shared/time";
 import { generateSession } from "./session";
@@ -14,10 +15,9 @@ import { getUserProfile, isEnctokenValid } from "./sessionOMS";
 
 export async function handleLogin(req: Request): Promise<Response> {
   try {
-    // Only allow POST requests
-    if (req.method !== "POST") {
-      return inputError("Method not allowed");
-    }
+    // Check HTTP method
+    const methodError = checkMethod(req, "POST");
+    if (methodError) return methodError;
 
     // Parse form-encoded data
     const contentType = req.headers.get("content-type");

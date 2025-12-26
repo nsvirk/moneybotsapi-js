@@ -2,7 +2,12 @@
  * Refresh instruments data from the Kite API
  */
 import { db } from "../_db/kite_instruments";
-import { successResponse, dbError, internalError } from "../_shared/responses";
+import {
+  successResponse,
+  dbError,
+  internalError,
+  checkMethod,
+} from "../_shared/responses";
 import { getISTTimestamp } from "../_shared/time";
 
 /**
@@ -189,10 +194,9 @@ export async function performInstrumentsRefresh(): Promise<{
  */
 export async function handleRefresh(req: Request): Promise<Response> {
   try {
-    // Only allow GET requests
-    if (req.method !== "GET") {
-      return internalError("Method not allowed");
-    }
+    // Check HTTP method
+    const methodError = checkMethod(req, "GET");
+    if (methodError) return methodError;
 
     // Perform the refresh
     const result = await performInstrumentsRefresh();

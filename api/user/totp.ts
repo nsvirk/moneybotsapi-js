@@ -1,7 +1,12 @@
 /**
  * TOTP (Time-based One-Time Password) generation
  */
-import { successResponse, inputError, dbError } from "../_shared/responses";
+import {
+  successResponse,
+  inputError,
+  dbError,
+  checkMethod,
+} from "../_shared/responses";
 
 /**
  * Decode base32 encoded string to Uint8Array
@@ -91,10 +96,9 @@ export async function generateTotpValue(
  */
 export async function handleTotp(req: Request): Promise<Response> {
   try {
-    // Only allow POST requests
-    if (req.method !== "POST") {
-      return inputError("Method not allowed");
-    }
+    // Check HTTP method
+    const methodError = checkMethod(req, "POST");
+    if (methodError) return methodError;
 
     // Parse form-encoded data
     const contentType = req.headers.get("content-type");

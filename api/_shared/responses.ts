@@ -8,7 +8,8 @@ export type ErrorType =
   | "DatabaseException"
   | "ValidationException"
   | "NotFoundException"
-  | "InternalException";
+  | "InternalException"
+  | "MethodNotAllowed";
 
 export interface SuccessResponse<T = any> {
   status: "success";
@@ -92,4 +93,37 @@ export function notFoundError(message: string): Response {
  */
 export function internalError(message: string): Response {
   return errorResponse("InternalException", message, 500);
+}
+
+/**
+ * Check if request method matches allowed method(s)
+ * Returns null if method is allowed, otherwise returns 405 Response
+ */
+export function checkMethod(
+  req: Request,
+  allowedMethods: string | string[]
+): Response | null {
+  const methods = Array.isArray(allowedMethods)
+    ? allowedMethods
+    : [allowedMethods];
+
+  if (!methods.includes(req.method)) {
+    const allowHeader = methods.join(", ");
+    return new Response(
+      JSON.stringify({
+        status: "error",
+        error_type: "MethodNotAllowed",
+        message: `Method ${req.method} not allowed. Allowed methods: ${allowHeader}`,
+      }),
+      {
+        status: 405,
+        headers: {
+          "Content-Type": "application/json",
+          "Allow": allowHeader,
+        },
+      }
+    );
+  }
+
+  return null;
 }
