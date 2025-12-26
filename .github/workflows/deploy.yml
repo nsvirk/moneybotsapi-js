@@ -24,8 +24,9 @@ jobs:
             # Navigate to application directory
             cd /home/${{ secrets.EC2_USERNAME }}/apps/moneybotsapi-js || exit 1
 
-            # Pull latest code
-            git pull origin main
+            # Reset any local changes and pull latest code
+            git fetch origin
+            git reset --hard origin/main
 
             # Install dependencies with Bun
             bun install
